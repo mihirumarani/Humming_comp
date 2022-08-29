@@ -299,15 +299,12 @@ registerDoParallel(clust)
 
 
 
-paramdat<-foreach(k1=1:50,.combine=rbind,.packages=c("msm","pROC","igraph","reshape2","tidyverse"))%dopar%
+paramdat<-foreach(k1=1:(5*10^6),.combine=rbind,.packages=c("msm","pROC","igraph","reshape2","tidyverse"))%dopar%
 {
 
-  
   p1<-runif(1,0,p1.max)
   Vb<-runif(1,0,v1.max)
-  #Va<-runif(1,-0.1,0.1)
-  #Vc<-runif(1,5,25)
-  #Vb<-runif(1,((5-961*Va-Vc)/31),((25-961*Va-Vc)/31))
+
   a.vec<-runif(nsp,0,1)
   
   res<-sim.comp(resources,build.util(p1,Vb,nsp),a.vec)
@@ -325,9 +322,9 @@ write.csv(paramdat,"firstparam.csv")
 param.main<-paramdat
 param.main<-param.main[,-1]
 
-# Choose the rows where all AUCs are above 0.6
+# Choose the rows where all AUCs are above 0.65
 good<-apply(param.main[,8:12],1,min)
-good.ind<-which(good>0.6)
+good.ind<-which(good>0.65)
 paramset<-param.main[good.ind,1:7]
 
 #Add new parameter values in the neighborhood of the filtered values.
